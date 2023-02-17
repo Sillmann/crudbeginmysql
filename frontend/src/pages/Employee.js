@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Employee = () => {
 
@@ -22,8 +23,21 @@ const Employee = () => {
     employee.map(emp=>
       <li key={emp.id}>
         {emp.name}<> - </>{emp.address}
+        <button className="delete" onClick={()=>handleDelete(emp.id)} >Delete</button>
+        <button className="update"><Link to={`/update/${emp.id}`}>Update</Link></button>
       </li>
     )
+
+
+  const handleDelete = async (id)=>{
+    try {
+      await axios.delete("http://localhost:3333/employee/"+id);
+     
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div>

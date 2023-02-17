@@ -26,6 +26,47 @@ app.get("/employee", (req,res)=>{
   })
 })
 
+app.post("/iemployee",(req,res)=>{
+  const q = "INSERT INTO employee (`name`,`department`,`address`) VALUES (?)";
+  const values = [
+    req.body.name,
+    req.body.department,
+    req.body.address,
+  ]
+  // const values = ["teste",1,"llllll"];
+  db.query(q,[values],(err,data)=>{
+    if (err) return res.json(err);
+    return res.json(data); 
+  })
+})
+
+app.delete("/employee/:id", (req,res)=>{
+  const employeeId = req.params.id;
+  const q = "DELETE FROM employee WHERE id = ?";
+
+  db.query(q,[employeeId],(err,data)=>{
+    if (err) return res.json(err);
+    return res.json("Employee has been deleted successfully."); 
+  })
+
+})
+
+app.put("/iemployee/:id", (req,res)=>{
+  const employeeId = req.params.id;
+  const q = "UPDATE employee SET `name` = ?, `department` = ?, `address` = ? WHERE id = ?";
+  const values = [
+    req.body.name,
+    req.body.department,
+    req.body.address,
+  ]
+
+  db.query(q,[...values,employeeId],(err,data)=>{
+    if (err) return res.json(err);
+    return res.json("Employee has been updated successfully."); 
+  })
+
+})
+
 app.listen(3333, ()=>{
   console.log("Backend ok")
 });
